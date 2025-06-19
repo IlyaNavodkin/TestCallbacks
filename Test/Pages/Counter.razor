@@ -1,0 +1,98 @@
+﻿@page "/counter"
+@using Test.Components
+@using static Test.Components.UserFormComponent
+
+<h3>Редактирование пользователя</h3>
+
+<style>
+    .page-container {
+        border: 2px solid #007bff;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+    .form-container {
+        border: 2px solid #28a745;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+    .display-container {
+        border: 2px solid #dc3545;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    .info-box {
+        border: 1px solid #6c757d;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+</style>
+
+@if (ViewModel != null)
+{
+    <div class="page-container">
+        <h4>Информация о странице</h4>
+        <p>Это страница для редактирования данных пользователя.</p>
+        <div class="info-box">
+            <p>Текущее имя: @ViewModel.UserFormViewModel.FirstName</p>
+            <p>Текущая фамилия: @ViewModel.UserFormViewModel.LastName</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h4>Форма редактирования</h4>
+        <UserFormComponent ViewModel="@ViewModel.UserFormViewModel"
+                           OnFirstNameChanged="HandleFirstNameChanged" 
+                           OnLastNameChanged="HandleLastNameChanged" 
+                           OnFormSubmit="HandleFormSubmit" />
+    </div>
+
+    <div class="display-container">
+        <h4>Отображение данных</h4>
+        <UserDisplayComponent FirstName="@ViewModel.UserFormViewModel.FirstName" 
+                              LastName="@ViewModel.UserFormViewModel.LastName" />
+    </div>
+}
+else
+{
+    <p>Загрузка данных...</p>
+}
+
+@code {
+    private PageViewModel ViewModel = new PageViewModel();
+
+    protected override void OnInitialized()
+    {
+        // Мок-данные для начального заполнения
+        ViewModel.UserFormViewModel = new UserFormViewModel
+        {
+            FirstName = "Иван",
+            LastName = "Иванов"
+        };
+    }
+
+    private async Task HandleFirstNameChanged(string firstName)
+    {
+        ViewModel.UserFormViewModel.FirstName = firstName;
+        StateHasChanged();
+    }
+
+    private async Task HandleLastNameChanged(string lastName)
+    {
+        
+        ViewModel.UserFormViewModel.LastName = lastName;
+        StateHasChanged();
+    }
+
+    private void HandleFormSubmit(UserFormViewModel model)
+    {
+        Console.WriteLine($"Форма отправлена: {model.FirstName} {model.LastName}");
+    }
+
+    public class PageViewModel
+    {
+        public UserFormViewModel UserFormViewModel { get; set; } = new UserFormViewModel();
+    }
+} 

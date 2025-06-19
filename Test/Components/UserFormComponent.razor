@@ -1,0 +1,69 @@
+<h4>Форма редактирования пользователя</h4>
+
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-control {
+        border: 1px solid #ced4da;
+        padding: 8px;
+        border-radius: 4px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    button {
+        margin-top: 10px;
+    }
+</style>
+
+<EditForm Model="ViewModel" OnValidSubmit="HandleValidSubmit">
+    <div class="form-group">
+        <label>Имя:</label>
+        <InputText class="form-control" Value="@ViewModel.FirstName" ValueChanged="HandleFirstNameChanged" ValueExpression="@(() => ViewModel.FirstName)" />
+    </div>
+    <div class="form-group">
+        <label>Фамилия:</label>
+        <InputText class="form-control" Value="@ViewModel.LastName" ValueChanged="HandleLastNameChanged" ValueExpression="@(() => ViewModel.LastName)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public UserFormViewModel ViewModel { get; set; } = new UserFormViewModel();
+
+    [Parameter]
+    public EventCallback<string> OnFirstNameChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnLastNameChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<UserFormViewModel> OnFormSubmit { get; set; }
+
+    private async Task HandleFirstNameChanged(string value)
+    {
+        ViewModel.FirstName = value;
+        OnFirstNameChanged.InvokeAsync(value);
+    }
+
+    private async Task HandleLastNameChanged(string value)
+    {
+        ViewModel.LastName = value;
+        OnLastNameChanged.InvokeAsync(value);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await OnFormSubmit.InvokeAsync(ViewModel);
+    }
+
+    public class UserFormViewModel
+    {
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+    }
+} 

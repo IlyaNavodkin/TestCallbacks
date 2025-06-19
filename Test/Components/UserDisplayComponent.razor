@@ -1,0 +1,24 @@
+<h4>Данные пользователя</h4>
+
+<style>
+    .full-name {
+        border: 1px solid #17a2b8;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+    }
+</style>
+
+<p>Полное имя: <span class="full-name">@FullName</span></p>
+
+
+@code {
+    [Parameter]
+    public string FirstName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string LastName { get; set; } = string.Empty;
+
+    public string FullName => $"{FirstName} {LastName}";
+
+} 
