@@ -47,13 +47,13 @@
     private async Task HandleFirstNameChanged(string value)
     {
         ViewModel.FirstName = value;
-        OnFirstNameChanged.InvokeAsync(value);
+        await OnFirstNameChanged.InvokeAsync(value);
     }
 
     private async Task HandleLastNameChanged(string value)
     {
         ViewModel.LastName = value;
-        OnLastNameChanged.InvokeAsync(value);
+        await OnLastNameChanged.InvokeAsync(value);
     }
 
     private async Task HandleValidSubmit()
