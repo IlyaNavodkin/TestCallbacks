@@ -22,11 +22,11 @@
 <EditForm Model="ViewModel" OnValidSubmit="HandleValidSubmit">
     <div class="form-group">
         <label>Имя:</label>
-        <InputText class="form-control" Value="@ViewModel.FirstName" ValueChanged="HandleFirstNameChanged" ValueExpression="@(() => ViewModel.FirstName)" />
+        <InputText class="form-control" @bind-Value="@ViewModel.FirstName" @bind-Value:after="HandleFirstNameChanged" />
     </div>
     <div class="form-group">
         <label>Фамилия:</label>
-        <InputText class="form-control" Value="@ViewModel.LastName" ValueChanged="HandleLastNameChanged" ValueExpression="@(() => ViewModel.LastName)" />
+        <InputText class="form-control" @bind-Value="@ViewModel.LastName" @bind-Value:after="HandleLastNameChanged" />
     </div>
     <button type="submit" class="btn btn-primary">Отправить</button>
 </EditForm>
@@ -44,16 +44,14 @@
     [Parameter]
     public EventCallback<UserFormViewModel> OnFormSubmit { get; set; }
 
-    private async Task HandleFirstNameChanged(string value)
+    private async Task HandleFirstNameChanged()
     {
-        ViewModel.FirstName = value;
-        await OnFirstNameChanged.InvokeAsync(value);
+        await OnFirstNameChanged.InvokeAsync(ViewModel.FirstName);
     }
 
-    private async Task HandleLastNameChanged(string value)
+    private async Task HandleLastNameChanged()
     {
-        ViewModel.LastName = value;
-        await OnLastNameChanged.InvokeAsync(value);
+        await OnLastNameChanged.InvokeAsync(ViewModel.LastName);
     }
 
     private async Task HandleValidSubmit()
